@@ -216,3 +216,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+db.sqlite3
+.env
+media/
+.DS_Store
+staticfiles/
+venv/
