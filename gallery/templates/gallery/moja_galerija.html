@@ -9,7 +9,7 @@
     <h1>Dobrodošli, {{ request.user.get_full_name }}</h1>
     <ul>
         {% for galerija in galerije %}
-            <li>{{ galerija.title }} - {{ galerija.event_date }}</li>
+            <li><a href="{% url "gallery_detail" galerija.id %}">{{ galerija.title }}</a> - {{ galerija.event_date }}</li>
         {% endfor %}
     </ul>
     <a href="{% url "logout" %}">Odjava</a>

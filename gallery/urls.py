@@ -8,4 +8,5 @@ urlpatterns = [
     path("odjava/", auth_views.LogoutView.as_view(), name="logout"),
     path("moja-galerija/", views.moja_galerija, name="moja_galerija"),
     path("", RedirectView.as_view(pattern_name="moja_galerija"), name="pocetna"),
+    path("galerija/<int:gallery_id>/", views.gallery_detail, name="gallery_detail"),
 ]
