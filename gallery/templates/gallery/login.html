@@ -1,16 +1,28 @@
-<!DOCTYPE html>
-<html lang="hr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prijava</title>
-</head>
-<body>
-    <h1>Prijava u galeriju</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Prijavu se</button>
-    </form>
-</body>
-</html>
+{% extends "gallery/base.html" %}
+{% block title %}Prijava{% endblock %}
+
+{% block content %}
+<main class="auth-screen">
+    <div class="auth-card">
+        <p class="eyebrow mono"><span class="dot"></span>Pristup galeriji</p>
+        <h1 class="display">Dobrodošli <em>natrag</em></h1>
+        <p class="auth-subtitle">Prijavite se da pogledate i preuzmete svoje fotografije.</p>
+
+        <form method="post">
+            {% csrf_token %}
+            {% if form.errors %}
+                <p class="form-error">Pogrešno korisničko ime ili lozinka.</p>
+            {% endif %}
+            <div class="field">
+                <label class="mono" for="id_username">Korisničko ime</label>
+                {{ form.username }}
+            </div>
+            <div class="field">
+                <label class="mono" for="id_password">Lozinka</label>
+                {{ form.password }}
+            </div>
+            <button type="submit" class="btn-primary">Prijavi se</button>
+        </form>
+    </div>
+</main>
+{% endblock %}

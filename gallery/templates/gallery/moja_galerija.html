@@ -1,17 +1,33 @@
-<!DOCTYPE html>
-<html lang="hr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moje galerije</title>
-</head>
-<body>
-    <h1>Dobrodošli, {{ request.user.get_full_name }}</h1>
-    <ul>
+{% extends "gallery/base.html" %}
+{% block title %}Moje galerije{% endblock %}
+
+{% block content %}
+<main class="page">
+    <header class="page-header">
+        <div>
+            <p class="eyebrow mono"><span class="dot"></span>Vaše galerije</p>
+            <h1 class="display">Dobrodošli, {{ request.user.first_name|default:request.user.username }}</h1>
+        </div>
+        <form action="{% url 'logout' %}" method="post" class="logout-form">
+            {% csrf_token %}
+            <button type="submit" class="btn-ghost mono">Odjava</button>
+        </form>
+    </header>
+
+    <section class="gallery-list">
         {% for galerija in galerije %}
-            <li><a href="{% url "gallery_detail" galerija.id %}">{{ galerija.title }}</a> - {{ galerija.event_date }}</li>
+            <a href="{% url 'gallery_detail' galerija.id %}" class="gallery-card">
+                <div class="gallery-card-body">
+                    <h2 class="display">{{ galerija.title }}</h2>
+                    {% if galerija.event_date %}
+                        <p class="mono gallery-date">{{ galerija.event_date|date:"d.m.Y" }}</p>
+                    {% endif %}
+                </div>
+                <span class="gallery-card-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+        {% empty %}
+            <p class="empty-state">Još nemate dostupnih galerija. Javite se svom fotografu.</p>
         {% endfor %}
-    </ul>
-    <a href="{% url "logout" %}">Odjava</a>
-</body>
-</html>
+    </section>
+</main>
+{% endblock %}
