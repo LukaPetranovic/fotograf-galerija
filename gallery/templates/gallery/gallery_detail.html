@@ -1,33 +1,41 @@
-<!DOCTYPE html>
-<html lang="hr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ galerija.title }}</title>
-</head>
-<body>
-    <a href="{% url "moja_galerija" %}">&larr; Natrag na moje galerije</a>
-    <h1>{{ galerija.title }}</h1>
-    <p>{{ galerija.description }}</p>
+{% extends "gallery/base.html" %}
+{% block title %}{{ galerija.title }}{% endblock %}
 
-    {% if kategorije %}
-    <nav>
-        <strong>Kategorije:</strong>
-        {% for kategorija in kategorije %}
-            <a href="#kategorija-{{ kategorija.id }}">{{ kategorija.name }}</a>
-        {% endfor %}
-    </nav>
+{% block content %}
+<div class="page-head">
+    <a class="back-link mono" href="{% url 'moja_galerija' %}">&larr; Sve galerije</a>
+    <h1 class="display">{{ galerija.title }}</h1>
+    {% if galerija.event_date %}
+        <p class="date mono">{{ galerija.event_date|date:"d.m.Y" }}</p>
     {% endif %}
+</div>
 
-    {% for kategorija in kategorije %}
-        <h2 id="kategorija-{{ kategorija.id }}">{{ kategorija.name }}</h2>
-        {% for foto in kategorija.photos.all %}
-            <div>
-                <img src="{{ foto.image.url }}" width="200">
-                <br>
-                <a href="{{ foto.image.url }}" download>Preuzmi</a>
-            </div>
+{% if kategorije %}
+<nav class="cat-nav">
+    <div class="cat-nav-inner">
+        {% for kategorija in kategorije %}
+            <a class="cat-pill" href="#kategorija-{{ kategorija.id }}">{{ kategorija.name }}</a>
         {% endfor %}
+    </div>
+</nav>
+{% endif %}
+
+<div class="gallery-body">
+    {% for kategorija in kategorije %}
+        <section class="cat-section" id="kategorija-{{ kategorija.id }}">
+            <h2 class="display">{{ kategorija.name }}</h2>
+            <p class="cat-count mono">{{ kategorija.photos.count }} fotografija</p>
+            <div class="photo-grid">
+                {% for foto in kategorija.photos.all %}
+                    <div class="photo">
+                        <img src="{{ foto.image.url }}" alt="">
+                        <a href="{{ foto.image.url }}" download class="download-overlay">
+                            <span class="download-btn">&darr; Preuzmi</span>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
     {% endfor %}
-</body>
-</html>
+</div>
+{% endblock %}
